@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "shaun.agent-pet",
+  "name": "Omarchy AI desktop agent",
+  "version": "0.2.0",
+  "author": "Shaun Gordon",
+  "license": "MIT",
+  "description": "A desk robot that waits, types and rings its bell as Hermes and OpenCode sessions change state, with auto-hide and a bar on/off switch.",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Omarchy AI desktop agent",
+    "description": "On/off switch for the AI desktop agent robot",
+    "category": "AI",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

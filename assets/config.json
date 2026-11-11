@@ -1,0 +1,18 @@
+{
+  "size": 560,
+  "screen": "",
+  "layer": "top",
+  "gravity": 1400,
+  "throwPower": 1.0,
+  "bottomMargin": 0,
+  "sessionTtl": 900,
+  "workingTtl": 90,
+  "doneHold": 4,
+  "startX": 0.5,
+  "autoHide": true,
+  "bellSound": "",
+  "bellVolume": 0.9,
+  "restTtl": 900,
+  "bellRings": 3,
+  "bellInterval": 300
+}

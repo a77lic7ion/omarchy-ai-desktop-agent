@@ -1,0 +1,40 @@
+#!/bin/sh
+# pet-event — push one state event into the Agent Pet socket.
+#
+#   pet-event waiting|working|done|idle [--agent NAME] [--session ID] [--detail TEXT]
+#
+# Silent by default: it is called from Hermes hooks, where stdout is parsed as a
+# hook directive, so nothing may be printed.
+
+set -u
+
+sock="${XDG_RUNTIME_DIR:-/tmp}/agent-pet/events.sock"
+agent="hermes"
+session="default"
+state=""
+detail=""
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --agent)   agent="${2:-}";   shift 2 ;;
+    --session) session="${2:-}"; shift 2 ;;
+    --detail)  detail="${2:-}";  shift 2 ;;
+    --state)   state="${2:-}";   shift 2 ;;
+    -h|--help) echo "usage: pet-event <waiting|working|done|idle> [--agent A] [--session S] [--detail D]"; exit 0 ;;
+    *)         state="$1"; shift ;;
+  esac
+done
+
+[ -n "$state" ] || exit 0
+[ -S "$sock" ] || exit 0
+
+if command -v jq >/dev/null 2>&1; then
+  line=$(jq -cn --arg a "$agent" --arg s "$session" --arg st "$state" --arg d "$detail" \
+    '{agent:$a, session:$s, state:$st, detail:$d}')
+else
+  line=$(printf '{"agent":"%s","session":"%s","state":"%s","detail":"%s"}' \
+    "$agent" "$session" "$state" "$detail")
+fi
+
+printf '%s\n' "$line" | socat - "UNIX-CONNECT:$sock" >/dev/null 2>&1 || true
+exit 0
